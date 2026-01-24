@@ -1,163 +1,221 @@
-    # SpecGuard LLM
 
-    **SpecGuard LLM** is an LLM-assisted **spec drift & compliance checker** for Ethereum specs/clients.
-    It runs in **CI** on pull requests, analyzes the **diff range**, extracts affected **protocol rules/assertions** from spec changes,
-    maps them to **impacted code/tests**, and posts **structured findings** back to GitHub PRs.
 
-    This project is designed to match the Ethereum Foundation ESP RFP: *“Integrating LLMs into Ethereum Protocol Security Research”*.
+<div align="center">
+  <img src="https://img.shields.io/badge/LLM-Powered-blueviolet?style=for-the-badge&logo=OpenAI" alt="LLM Powered"/>
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License"/>
+</div>
 
-    ## Why this is useful for protocol security work
+# 🚦 SpecGuard LLM
 
-    Spec diffs (EIPs, consensus-specs, execution-specs) often introduce subtle normative changes (MUST/SHALL/SHOULD)
-    that can silently drift from client behavior. SpecGuard turns spec PRs into a **review checklist**:
-    - What rules changed?
-    - Where do we expect code or tests to reflect them?
-    - What’s missing or inconsistent?
+<p align="center">
+  <b>LLM-powered <span style="color:#7c3aed">spec drift</span> & <span style="color:#059669">compliance checker</span> for Ethereum specs/clients</b><br>
+  <sub>Automated, explainable, and secure protocol review for the Ethereum ecosystem</sub>
+</p>
 
-    ## Supported repos (demo targets)
+---
 
-    - `ethereum/consensus-specs`
-    - `ethereum/execution-specs`
+<details open>
+<summary><b>🔗 Table of Contents</b></summary>
 
-    SpecGuard works best when run *inside* a checked-out repo (spec repo or client repo) so it can `git diff` and search files.
+- [Overview](#-overview)
+- [Quick Start](#-quick-start)
+- [Architecture](#-architecture)
+- [CLI Usage](#-cli-usage)
+- [GitHub Action](#-github-action)
+- [Advanced](#-advanced)
+- [Examples](#-examples)
+- [License](#-license)
+</details>
 
-    ## High-level architecture
+---
 
-    ```mermaid
-    flowchart LR
-      A[Git diff base..head] --> B[Diff normalizer + Redaction]
-      B --> C[Spec file filter (.md/.rst/.yaml/.json)]
-      C --> D[LLM Rule Extractor
-(prompts/rule_extraction.md)]
-      D --> E[Rule Assertions
-(structured)]
-      E --> F[Heuristic Mapper
-(ripgrep-like search)]
-      F --> G[Findings Builder
-(severity/confidence)]
-      G --> H[JSON Report + Markdown Summary]
-      H --> I[GitHub Action
-comment/check + artifact]
-      H --> J[Local CLI output]
-      D --> K[Cache
-(hash(input+prompt))]
-    ```
+## ✨ Overview
 
-    ## Quick start (local)
+**SpecGuard LLM** is an LLM-assisted spec drift & compliance checker for Ethereum specs/clients. It runs in CI on pull requests, analyzes the diff, extracts affected protocol rules, maps them to impacted code/tests, and posts structured findings back to GitHub PRs.
 
-    Requirements: Python 3.10+
+**Why SpecGuard?**
+- Protocol spec changes are often subtle and critical.
+- Turns every PR into a smart review checklist:
+  - What rules changed?
+  - Where should code/tests reflect them?
+  - What's missing or inconsistent?
 
-    ```bash
-    git clone https://github.com/<you>/specguard-llm
-    cd specguard-llm
-    pip install -e ".[dev]"
-    ```
+---
 
-    Run against a repo checkout (example: consensus-specs):
+## 🚀 Quick Start
 
-    ```bash
-    git clone https://github.com/ethereum/consensus-specs
-    cd consensus-specs
 
-    # Compare base..head (replace SHAs or refs)
-    specguard analyze --repo . --base origin/master --head HEAD --out specguard.json
-    ```
+```bash
+git clone https://github.com/GitBodda/specguard-llm
+cd specguard-llm
+pip install -e ".[dev]"
+```
 
-    Produce a human summary:
+Analyze a spec repo (example: consensus-specs):
 
-    ```bash
-    specguard summarize --input specguard.json
-    ```
+```bash
+git clone https://github.com/ethereum/consensus-specs
+cd consensus-specs
+specguard analyze --repo . --base origin/master --head HEAD --out specguard.json
+```
 
-    ### LLM configuration (OpenAI-compatible)
+Summarize findings:
 
-    SpecGuard defaults to **local/no-LLM mode** (safe for private repos). Enable LLM explicitly:
+```bash
+specguard summarize --input specguard.json
+```
 
-    ```bash
-    export SPEC_GUARD_LLM_PROVIDER=openai
-    export SPEC_GUARD_OPENAI_BASE_URL=https://api.openai.com/v1
-    export SPEC_GUARD_OPENAI_API_KEY=...   # or via GitHub Secrets in CI
-    export SPEC_GUARD_OPENAI_MODEL=gpt-4o-mini
-    ```
+---
 
-    Deterministic mode:
+## 🏗️ Architecture
 
-    ```bash
-    specguard analyze --deterministic --cache-dir .specguard/cache
-    ```
+```mermaid
 
-    ## GitHub Action usage
+<div align="center">
+  <img src="https://img.shields.io/badge/LLM-Powered-blueviolet?style=for-the-badge&logo=OpenAI" alt="LLM Powered"/>
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License"/>
+</div>
 
-    In your target repo, add:
+# SpecGuard LLM
 
-    `.github/workflows/specguard.yml`:
+LLM-powered spec drift & compliance checker for Ethereum specs/clients. Runs in CI on pull requests, analyzes diffs, extracts affected protocol rules, maps them to code/tests, and posts structured findings to GitHub PRs.
 
-    ```yaml
-    name: SpecGuard
-    on:
-      pull_request:
-        types: [opened, synchronize, reopened]
-    permissions:
-      contents: read
-      pull-requests: write
-    jobs:
-      specguard:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v4
-            with:
-              fetch-depth: 0
+## Table of Contents
 
-          - uses: actions/setup-python@v5
-            with:
-              python-version: "3.11"
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [Architecture](#architecture)
+- [CLI Usage](#cli-usage)
+- [GitHub Action](#github-action)
+- [Advanced](#advanced)
+- [Examples](#examples)
+- [Prompts](#prompts)
+- [License](#license)
 
-          - name: Install SpecGuard
-            run: |
-              pip install specguard
+## Overview
 
-          - name: Run SpecGuard
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              SPEC_GUARD_LLM_PROVIDER: openai
-              SPEC_GUARD_OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-              SPEC_GUARD_OPENAI_MODEL: gpt-4o-mini
-              SPEC_GUARD_OPENAI_BASE_URL: https://api.openai.com/v1
-            run: |
-              specguard github-action                 --repo .                 --base "${{ github.event.pull_request.base.sha }}"                 --head "${{ github.event.pull_request.head.sha }}"                 --pr-number "${{ github.event.pull_request.number }}"                 --repo-slug "${{ github.repository }}"                 --fail-on high                 --out specguard.json
+Protocol spec changes are often subtle and critical. SpecGuard turns every PR into a smart review checklist:
+- What rules changed?
+- Where should code/tests reflect them?
+- What's missing or inconsistent?
 
-          - name: Upload SpecGuard artifact
-            uses: actions/upload-artifact@v4
-            with:
-              name: specguard-report
-              path: specguard.json
-    ```
+## Quick Start
 
-    CI will **fail only for HIGH** severity findings (configurable with `--fail-on`).
+```bash
+git clone https://github.com/GitBodda/specguard-llm
+cd specguard-llm
+pip install -e ".[dev]"
+```
 
-    ## Output schema (JSON)
+Analyze a spec repo (example: consensus-specs):
 
-    SpecGuard writes a single JSON report with:
-    - `meta`: run metadata (repo, base/head, prompt versions, deterministic flag)
-    - `findings[]`: list of issues (severity/confidence/evidence/actions/links/locations)
+```bash
+git clone https://github.com/ethereum/consensus-specs
+cd consensus-specs
+specguard analyze --repo . --base origin/master --head HEAD --out specguard.json
+```
 
-    Schema is in `schemas/report.schema.json`.
+Summarize findings:
 
-    ## Next-level mode (multi-repo mapping + better spec links)
+```bash
+specguard summarize --input specguard.json
+```
 
-SpecGuard can map spec rules into a **second repository** (e.g. an Ethereum client checkout) to highlight
-where the client might need updates/tests.
+## Architecture
 
-### Example: map consensus-specs PR rules into a client repo
+![Architecture Diagram](docs/architecture.png)
+
+## CLI Usage
+
+```bash
+specguard analyze --repo . --base origin/master --head HEAD --out specguard.json
+```
+
+Enable LLM (OpenAI):
+
+```bash
+export SPEC_GUARD_LLM_PROVIDER=openai
+export SPEC_GUARD_OPENAI_BASE_URL=https://api.openai.com/v1
+export SPEC_GUARD_OPENAI_API_KEY=...
+export SPEC_GUARD_OPENAI_MODEL=gpt-4o-mini
+```
+
+Deterministic mode:
+
+```bash
+specguard analyze --deterministic --cache-dir .specguard/cache
+```
+
+## GitHub Action
+
+Add to your repo as `.github/workflows/specguard.yml`:
+
+```yaml
+name: SpecGuard
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  specguard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install SpecGuard
+        run: |
+          pip install specguard
+      - name: Run SpecGuard
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SPEC_GUARD_LLM_PROVIDER: openai
+          SPEC_GUARD_OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SPEC_GUARD_OPENAI_MODEL: gpt-4o-mini
+          SPEC_GUARD_OPENAI_BASE_URL: https://api.openai.com/v1
+        run: |
+          specguard github-action \
+            --repo . \
+            --base "${{ github.event.pull_request.base.sha }}" \
+            --head "${{ github.event.pull_request.head.sha }}" \
+            --pr-number "${{ github.event.pull_request.number }}" \
+            --repo-slug "${{ github.repository }}" \
+            --fail-on high \
+            --out specguard.json
+      - name: Upload SpecGuard artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: specguard-report
+          path: specguard.json
+```
+
+## Advanced
+
+Multi-repo mapping: Map spec rules into a client repo to highlight where updates/tests are needed.
 
 ```bash
 cd consensus-specs
-export CLIENT_REPO=/path/to/lighthouse   # or geth/nethermind/prysm/teku...
-
-specguard analyze   --repo .   --base origin/master   --head HEAD   --map-repo "$CLIENT_REPO"   --repo-slug ethereum/consensus-specs   --search-backend auto   --deterministic   --cache-dir .specguard/cache   --out specguard.json
+export CLIENT_REPO=/path/to/lighthouse
+specguard analyze \
+  --repo . \
+  --base origin/master \
+  --head HEAD \
+  --map-repo "$CLIENT_REPO" \
+  --repo-slug ethereum/consensus-specs \
+  --search-backend auto \
+  --deterministic \
+  --cache-dir .specguard/cache \
+  --out specguard.json
 ```
 
-### Config file (specguard.yml)
+Config file example (`specguard.yml`):
 
 ```yaml
 repo_slug: ethereum/consensus-specs
@@ -170,53 +228,26 @@ prefer_tests: true
 max_findings: 200
 ```
 
-Then run:
+## Examples
 
-```bash
-specguard analyze --repo . --base <base> --head <head> --config specguard.yml --out specguard.json
-```
-
-### Better spec links (file + header anchors)
-
-If the LLM returns `spec_section` as a markdown file path (e.g. `specs/phase0/beacon-chain.md`),
-SpecGuard will try to choose the best matching header anchor and create a stable link:
-
-`https://github.com/<repo>/blob/<head>/<file>#<anchor>`
+See [`examples/`](examples/):
+- [`examples/sample_report.json`](examples/sample_report.json)
+- [`examples/sample_comment.md`](examples/sample_comment.md)
 
 ## Prompts
 
+All prompts are versioned and editable under [`prompts/`](prompts/):
+- [`prompts/rule_extraction.md`](prompts/rule_extraction.md)
+- [`prompts/severity_scoring.md`](prompts/severity_scoring.md)
 
-    All prompts are versioned and editable under `prompts/`.
-    - `prompts/rule_extraction.md`
-    - `prompts/severity_scoring.md`
+Prompt pack structure:
+```
+prompts/
+  pack.yaml
+  rule_extraction.md
+  severity_scoring.md
+```
 
-    Prompt pack structure:
-    ```
-    prompts/
-      pack.yaml
-      rule_extraction.md
-      severity_scoring.md
-    ```
+## License
 
-    ## Security notes
-
-    - **No external calls by default.** LLM usage requires explicit configuration.
-    - Diff content is passed through a **redaction layer** to strip likely secrets/tokens.
-    - Supports **local execution** and an LLM provider interface with a placeholder for local models.
-
-    ## Development
-
-    ```bash
-    pip install -e ".[dev]"
-    pytest -q
-    ```
-
-    ## Example outputs
-
-    See `examples/`:
-    - `examples/sample_report.json`
-    - `examples/sample_comment.md` (PR comment content)
-
-    ## License
-
-    MIT
+MIT
