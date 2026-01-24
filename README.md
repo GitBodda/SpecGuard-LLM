@@ -71,63 +71,24 @@ specguard summarize --input specguard.json
 ## 🏗️ Architecture
 
 ```mermaid
-
-<div align="center">
-  <img src="https://img.shields.io/badge/LLM-Powered-blueviolet?style=for-the-badge&logo=OpenAI" alt="LLM Powered"/>
-  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+"/>
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License"/>
-</div>
-
-# SpecGuard LLM
-
-LLM-powered spec drift & compliance checker for Ethereum specs/clients. Runs in CI on pull requests, analyzes diffs, extracts affected protocol rules, maps them to code/tests, and posts structured findings to GitHub PRs.
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Quick Start](#quick-start)
-- [Architecture](#architecture)
-- [CLI Usage](#cli-usage)
-- [GitHub Action](#github-action)
-- [Advanced](#advanced)
-- [Examples](#examples)
-- [Prompts](#prompts)
-- [License](#license)
-
-## Overview
-
-Protocol spec changes are often subtle and critical. SpecGuard turns every PR into a smart review checklist:
-- What rules changed?
-- Where should code/tests reflect them?
-- What's missing or inconsistent?
-
-## Quick Start
-
-```bash
-git clone https://github.com/GitBodda/specguard-llm
-cd specguard-llm
-pip install -e ".[dev]"
+flowchart LR
+  A[Git diff base..head] --> B[Diff normalizer + Redaction]
+  B --> C[Spec file filter]
+  C --> D[LLM Rule Extractor]
+  D --> E[Rule Assertions]
+  E --> F[Heuristic Mapper]
+  F --> G[Findings Builder]
+  G --> H[JSON Report + Markdown Summary]
+  H --> I[GitHub Action]
+  H --> J[Local CLI output]
+  D --> K[Cache]
 ```
 
-Analyze a spec repo (example: consensus-specs):
+---
 
-```bash
-git clone https://github.com/ethereum/consensus-specs
-cd consensus-specs
-specguard analyze --repo . --base origin/master --head HEAD --out specguard.json
-```
+## ⚡ CLI Usage
 
-Summarize findings:
-
-```bash
-specguard summarize --input specguard.json
-```
-
-## Architecture
-
-![Architecture Diagram](docs/architecture.png)
-
-## CLI Usage
+Analyze changes:
 
 ```bash
 specguard analyze --repo . --base origin/master --head HEAD --out specguard.json
@@ -148,7 +109,9 @@ Deterministic mode:
 specguard analyze --deterministic --cache-dir .specguard/cache
 ```
 
-## GitHub Action
+---
+
+## 🔄 GitHub Action
 
 Add to your repo as `.github/workflows/specguard.yml`:
 
@@ -196,9 +159,13 @@ jobs:
           path: specguard.json
 ```
 
-## Advanced
+> CI fails only for HIGH severity findings (`--fail-on high`).
 
-Multi-repo mapping: Map spec rules into a client repo to highlight where updates/tests are needed.
+---
+
+## 🧭 Advanced
+
+**Multi-repo mapping:** Map spec rules into a client repo to highlight where updates/tests are needed.
 
 ```bash
 cd consensus-specs
@@ -215,7 +182,7 @@ specguard analyze \
   --out specguard.json
 ```
 
-Config file example (`specguard.yml`):
+**Config file example (`specguard.yml`):**
 
 ```yaml
 repo_slug: ethereum/consensus-specs
@@ -228,13 +195,23 @@ prefer_tests: true
 max_findings: 200
 ```
 
-## Examples
+---
+
+## 📂 Examples
+
 
 See [`examples/`](examples/):
 - [`examples/sample_report.json`](examples/sample_report.json)
 - [`examples/sample_comment.md`](examples/sample_comment.md)
 
-## Prompts
+---
+
+specguard analyze   --repo .   --base origin/master   --head HEAD   --map-repo "$CLIENT_REPO"   --repo-slug ethereum/consensus-specs   --search-backend auto   --deterministic   --cache-dir .specguard/cache   --out specguard.json
+
+
+---
+
+## 💡 Prompts
 
 All prompts are versioned and editable under [`prompts/`](prompts/):
 - [`prompts/rule_extraction.md`](prompts/rule_extraction.md)
@@ -248,6 +225,8 @@ prompts/
   severity_scoring.md
 ```
 
-## License
+---
+
+## 📄 License
 
 MIT
