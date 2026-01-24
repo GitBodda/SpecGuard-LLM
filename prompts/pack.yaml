@@ -1,0 +1,4 @@
+version: "0.1.0"
+prompts:
+  rule_extraction: "rule_extraction.md"
+  severity_scoring: "severity_scoring.md"

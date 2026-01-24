@@ -1,0 +1,42 @@
+name: "SpecGuard LLM"
+description: "LLM-assisted spec drift & compliance checker for Ethereum specs/clients"
+inputs:
+  base:
+    description: "Base SHA"
+    required: true
+  head:
+    description: "Head SHA"
+    required: true
+  pr_number:
+    description: "PR number"
+    required: true
+  repo_slug:
+    description: "owner/repo"
+    required: true
+config:
+  description: "Optional path to specguard.yml"
+  required: false
+  default: ""
+map_repo:
+  description: "Optional secondary repo to map against"
+  required: false
+  default: ""
+fail_on:
+
+    description: "Severity threshold to fail on (low|medium|high)"
+    required: false
+    default: "high"
+  out:
+    description: "Output JSON path"
+    required: false
+    default: "specguard.json"
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - shell: bash
+      run: |
+        pip install specguard
+        specguard github-action               --repo .               --base "${{ inputs.base }}"               --head "${{ inputs.head }}"               --pr-number "${{ inputs.pr_number }}"               --repo-slug "${{ inputs.repo_slug }}"               --fail-on "${{ inputs.fail_on }}"               --out "${{ inputs.out }}"

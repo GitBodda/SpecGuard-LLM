@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "tool": "specguard",
+    "version": "0.2.0",
+    "repo": "/path/to/consensus-specs",
+    "base": "abc123",
+    "head": "def456",
+    "timestamp": "2026-01-22T10:00:00Z",
+    "deterministic": true,
+    "prompt_pack_version": "0.1.0",
+    "llm_provider": "openai",
+    "model": "gpt-4o-mini",
+    "cache_hit": false
+  },
+  "findings": [
+    {
+      "severity": "HIGH",
+      "confidence": 0.84,
+      "rule_id": "SG-3f12a9c1",
+      "rule_summary": "A block MUST be rejected if its state root does not match the post-state transition root.",
+      "evidence": "Diff adds explicit MUST rejection condition for mismatched state root.\n\nRisk rationale: consensus-critical block validity rule.",
+      "recommended_action": "Review impacted code locations to ensure they implement the updated rule. Add/extend tests (unit/spec vectors) to assert the new behavior.",
+      "impacted_files": [
+        "specs/beacon-chain/some_module.py",
+        "tests/test_state_root.py"
+      ],
+      "locations": [
+        {
+          "path": "specs/beacon-chain/some_module.py",
+          "start_line": 210,
+          "end_line": 210,
+          "kind": "code"
+        },
+        {
+          "path": "tests/test_state_root.py",
+          "start_line": 88,
+          "end_line": 88,
+          "kind": "test"
+        }
+      ],
+      "links": [
+        "https://github.com/ethereum/consensus-specs/blob/HEAD/specs/beacon-chain.md#state-transition"
+      ]
+    }
+  ]
+}
