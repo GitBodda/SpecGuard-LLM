@@ -76,29 +76,29 @@ def analyze(
 
     """Analyze base..head diffs and output JSON report."""
     cfg = load_config(config_path)
-effective_repo_slug = repo_slug or cfg.repo_slug
-effective_map_repo = map_repo or cfg.map_repo
-effective_extra_redact = list(cfg.extra_redact) + (list(extra_redact) if extra_redact else [])
+    effective_repo_slug = repo_slug or cfg.repo_slug
+    effective_map_repo = map_repo or cfg.map_repo
+    effective_extra_redact = list(cfg.extra_redact) + (list(extra_redact) if extra_redact else [])
 
-cfg = load_config(config_path)
-effective_map_repo = map_repo or cfg.map_repo
+    cfg = load_config(config_path)
+    effective_map_repo = map_repo or cfg.map_repo
 
-report = analyze_repo(
-    repo=repo,
-    base=base,
-    head=head,
-    out_path=Path(out_path),
-    deterministic=deterministic,
-    cache_dir=(Path(cache_dir) if cache_dir else None),
-    repo_slug=repo_slug,
-    map_repo=effective_map_repo,
-    search_backend=search_backend or cfg.search_backend,
-    max_keyword_hits=max_keyword_hits or cfg.max_keyword_hits,
-    prefer_tests=(not no_prefer_tests) and cfg.prefer_tests,
-    max_findings=max_findings or cfg.max_findings,
-    schema_path=Path(__file__).resolve().parents[3] / "schemas" / "report.schema.json",
-)
-md = summarize_report_md(report)
+    report = analyze_repo(
+        repo=repo,
+        base=base,
+        head=head,
+        out_path=Path(out_path),
+        deterministic=deterministic,
+        cache_dir=(Path(cache_dir) if cache_dir else None),
+        repo_slug=repo_slug,
+        map_repo=effective_map_repo,
+        search_backend=search_backend or cfg.search_backend,
+        max_keyword_hits=max_keyword_hits or cfg.max_keyword_hits,
+        prefer_tests=(not no_prefer_tests) and cfg.prefer_tests,
+        max_findings=max_findings or cfg.max_findings,
+        schema_path=Path(__file__).resolve().parents[3] / "schemas" / "report.schema.json",
+    )
+    md = summarize_report_md(report)
 
     if comment:
         from .github import post_pr_comment
