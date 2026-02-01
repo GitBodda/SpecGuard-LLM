@@ -32,15 +32,22 @@ from .utils import (
 )
 
 console = Console()
+TOOL_ROOT = Path(__file__).resolve().parents[2]
 
 
 def load_prompt_pack(root: Path) -> tuple[str, dict, dict]:
-    pack_path = root / "prompts" / "pack.yaml"
+    pack_path = Path(root) / "prompts" / "pack.yaml"
+    if not pack_path.exists():
+        pack_path = TOOL_ROOT / "prompts" / "pack.yaml"
+    if not pack_path.exists():
+        raise FileNotFoundError(
+            f"Prompt pack not found: tried {Path(root) / 'prompts/pack.yaml'} and {TOOL_ROOT / 'prompts/pack.yaml'}"
+        )
     pack = yaml.safe_load(load_text(pack_path))
     version = str(pack.get("version", "0.0.0"))
     prompts = {}
     for key, fname in pack.get("prompts", {}).items():
-        prompts[key] = load_text(root / "prompts" / fname)
+        prompts[key] = load_text(pack_path.parent / fname)
     return version, pack, prompts
 
 
