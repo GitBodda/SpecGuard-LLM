@@ -2,44 +2,367 @@
   "meta": {
     "tool": "specguard",
     "version": "0.2.0",
-    "repo": "/path/to/consensus-specs",
-    "base": "abc123",
-    "head": "def456",
-    "timestamp": "2026-01-22T10:00:00Z",
-    "deterministic": true,
+    "repo": "/home/runner/work/consensus-specs/consensus-specs",
+    "base": "ff8fc288b660e6c767097eec07e8517ef5ea6b73",
+    "head": "c54ce3372c6ef083c9b5e63fe41222fdd5401e54",
+    "timestamp": "2026-02-01T08:18:01.328888+00:00",
+    "deterministic": false,
     "prompt_pack_version": "0.1.0",
     "llm_provider": "openai",
-    "model": "gpt-4o-mini",
+    "model": "gemini-2.0-flash",
     "cache_hit": false
   },
   "findings": [
     {
-      "severity": "HIGH",
-      "confidence": 0.84,
-      "rule_id": "SG-3f12a9c1",
-      "rule_summary": "A block MUST be rejected if its state root does not match the post-state transition root.",
-      "evidence": "Diff adds explicit MUST rejection condition for mismatched state root.\n\nRisk rationale: consensus-critical block validity rule.",
+      "severity": "MEDIUM",
+      "confidence": 0.9,
+      "rule_id": "SG-7805-sidecar-rebroadcast",
+      "rule_summary": "Implementations MUST NOT re-broadcast a sidecar until deferred validation succeeds.",
+      "evidence": "Implementations MUST NOT re-broadcast a sidecar until deferred validation succeeds.\n\nRisk rationale: Incorrect sidecar rebroadcasting could lead to DoS or incorrect fork choice, but is not a core consensus rule.",
       "recommended_action": "Review impacted code locations to ensure they implement the updated rule. Add/extend tests (unit/spec vectors) to assert the new behavior.",
       "impacted_files": [
-        "specs/beacon-chain/some_module.py",
-        "tests/test_state_root.py"
+        "(map_repo)/CLAUDE.md",
+        "(map_repo)/beacon_node/beacon_chain/benches/benches.rs",
+        "(map_repo)/beacon_node/beacon_chain/src/beacon_chain.rs",
+        "(map_repo)/beacon_node/beacon_chain/src/beacon_fork_choice_store.rs",
+        "(map_repo)/beacon_node/beacon_chain/src/observed_block_producers.rs",
+        "(map_repo)/beacon_node/beacon_chain/src/observed_data_sidecars.rs",
+        "(map_repo)/beacon_node/beacon_chain/src/observed_operations.rs",
+        "(map_repo)/beacon_node/beacon_chain/src/observed_slashable.rs",
+        "(map_repo)/beacon_node/beacon_chain/tests/validator_monitor.rs",
+        "(map_repo)/beacon_node/execution_layer/src/engine_api/json_structures.rs",
+        "(map_repo)/beacon_node/execution_layer/src/lib.rs",
+        "(map_repo)/beacon_node/http_api/src/publish_blocks.rs",
+        "(map_repo)/beacon_node/http_api/src/task_spawner.rs",
+        "(map_repo)/beacon_node/lighthouse_network/src/peer_manager/peerdb.rs",
+        "(map_repo)/beacon_node/network/src/sync/backfill_sync/mod.rs",
+        "(map_repo)/beacon_node/network/src/sync/custody_backfill_sync/mod.rs",
+        "(map_repo)/beacon_node/network/src/sync/network_context.rs",
+        "(map_repo)/beacon_node/network/src/sync/range_sync/chain.rs",
+        "(map_repo)/beacon_node/src/cli.rs",
+        "(map_repo)/beacon_node/store/src/consensus_context.rs",
+        "(map_repo)/beacon_node/store/src/metadata.rs",
+        "(map_repo)/consensus/state_processing/src/block_replayer.rs",
+        "(map_repo)/crypto/eth2_keystore/src/json_keystore/checksum_module.rs",
+        "(map_repo)/crypto/eth2_keystore/src/json_keystore/cipher_module.rs",
+        "(map_repo)/crypto/eth2_keystore/src/json_keystore/kdf_module.rs",
+        "(map_repo)/crypto/eth2_keystore/src/json_keystore/mod.rs",
+        "specs/_features/eip7441/beacon-chain.md",
+        "specs/_features/eip7805/fork-choice.md",
+        "specs/_features/eip7805/p2p-interface.md",
+        "specs/_features/eip7805/validator.md",
+        "specs/_features/eip8025/p2p-interface.md",
+        "specs/_features/eip8025/prover.md",
+        "specs/altair/light-client/light-client.md",
+        "specs/altair/light-client/p2p-interface.md",
+        "specs/altair/p2p-interface.md",
+        "specs/bellatrix/fork-choice.md",
+        "specs/bellatrix/p2p-interface.md"
       ],
       "locations": [
         {
-          "path": "specs/beacon-chain/some_module.py",
-          "start_line": 210,
-          "end_line": 210,
+          "path": "specs/_features/eip7441/beacon-chain.md",
+          "start_line": 73,
+          "end_line": 73,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip7805/fork-choice.md",
+          "start_line": 75,
+          "end_line": 75,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip7805/fork-choice.md",
+          "start_line": 168,
+          "end_line": 168,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip7805/fork-choice.md",
+          "start_line": 327,
+          "end_line": 327,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip7805/fork-choice.md",
+          "start_line": 379,
+          "end_line": 379,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip7805/p2p-interface.md",
+          "start_line": 75,
+          "end_line": 75,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip7805/validator.md",
+          "start_line": 255,
+          "end_line": 255,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip8025/p2p-interface.md",
+          "start_line": 74,
+          "end_line": 74,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip8025/p2p-interface.md",
+          "start_line": 121,
+          "end_line": 121,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip8025/p2p-interface.md",
+          "start_line": 125,
+          "end_line": 125,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip8025/p2p-interface.md",
+          "start_line": 129,
+          "end_line": 129,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip8025/p2p-interface.md",
+          "start_line": 132,
+          "end_line": 132,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/_features/eip8025/prover.md",
+          "start_line": 73,
+          "end_line": 73,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/light-client.md",
+          "start_line": 17,
+          "end_line": 17,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 57,
+          "end_line": 57,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 71,
+          "end_line": 71,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 78,
+          "end_line": 78,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 107,
+          "end_line": 107,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 118,
+          "end_line": 118,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 125,
+          "end_line": 125,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 177,
+          "end_line": 177,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 223,
+          "end_line": 223,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 225,
+          "end_line": 225,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 226,
+          "end_line": 226,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 230,
+          "end_line": 230,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 231,
+          "end_line": 231,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/light-client/p2p-interface.md",
+          "start_line": 342,
+          "end_line": 342,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/p2p-interface.md",
+          "start_line": 99,
+          "end_line": 99,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/p2p-interface.md",
+          "start_line": 157,
+          "end_line": 157,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/p2p-interface.md",
+          "start_line": 227,
+          "end_line": 227,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/p2p-interface.md",
+          "start_line": 291,
+          "end_line": 291,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/altair/p2p-interface.md",
+          "start_line": 393,
+          "end_line": 393,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/bellatrix/fork-choice.md",
+          "start_line": 81,
+          "end_line": 81,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/bellatrix/fork-choice.md",
+          "start_line": 84,
+          "end_line": 84,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/bellatrix/fork-choice.md",
+          "start_line": 88,
+          "end_line": 88,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/bellatrix/fork-choice.md",
+          "start_line": 90,
+          "end_line": 90,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/bellatrix/fork-choice.md",
+          "start_line": 94,
+          "end_line": 94,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/bellatrix/fork-choice.md",
+          "start_line": 189,
+          "end_line": 189,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/bellatrix/p2p-interface.md",
+          "start_line": 100,
+          "end_line": 100,
+          "kind": "spec"
+        },
+        {
+          "path": "specs/bellatrix/p2p-interface.md",
+          "start_line": 120,
+          "end_line": 120,
+          "kind": "spec"
+        },
+        {
+          "path": "(map_repo)/CLAUDE.md",
+          "start_line": 204,
+          "end_line": 204,
+          "kind": "spec"
+        },
+        {
+          "path": "(map_repo)/beacon_node/beacon_chain/src/beacon_chain.rs",
+          "start_line": 6534,
+          "end_line": 6534,
           "kind": "code"
         },
         {
-          "path": "tests/test_state_root.py",
-          "start_line": 88,
-          "end_line": 88,
+          "path": "(map_repo)/beacon_node/beacon_chain/src/beacon_fork_choice_store.rs",
+          "start_line": 174,
+          "end_line": 174,
+          "kind": "code"
+        },
+        {
+          "path": "(map_repo)/beacon_node/beacon_chain/src/observed_block_producers.rs",
+          "start_line": 80,
+          "end_line": 80,
+          "kind": "code"
+        },
+        {
+          "path": "(map_repo)/beacon_node/beacon_chain/src/observed_data_sidecars.rs",
+          "start_line": 96,
+          "end_line": 96,
+          "kind": "code"
+        },
+        {
+          "path": "(map_repo)/beacon_node/beacon_chain/src/observed_operations.rs",
+          "start_line": 154,
+          "end_line": 154,
+          "kind": "code"
+        },
+        {
+          "path": "(map_repo)/beacon_node/beacon_chain/src/observed_slashable.rs",
+          "start_line": 48,
+          "end_line": 48,
+          "kind": "code"
+        },
+        {
+          "path": "(map_repo)/beacon_node/beacon_chain/tests/validator_monitor.rs",
+          "start_line": 53,
+          "end_line": 53,
           "kind": "test"
+        },
+        {
+          "path": "(map_repo)/beacon_node/execution_layer/src/engine_api/json_structures.rs",
+          "start_line": 493,
+          "end_line": 493,
+          "kind": "code"
+        },
+        {
+          "path": "(map_repo)/beacon_node/execution_layer/src/engine_api/json_structures.rs",
+          "start_line": 500,
+          "end_line": 500,
+          "kind": "code"
         }
       ],
       "links": [
-        "https://github.com/ethereum/consensus-specs/blob/HEAD/specs/beacon-chain.md#state-transition"
+        "https://github.com/GitBodda/consensus-specs/blob/c54ce3372c6ef083c9b5e63fe41222fdd5401e54/specs/_features/eip7805/fork-choice.md#on_block"
       ]
     }
   ]
