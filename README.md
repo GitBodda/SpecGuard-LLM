@@ -25,8 +25,8 @@
 - [GitHub Action](#-github-action)
 - [Advanced](#-advanced)
 - [Examples](#-examples)
-- [Demo (CI + PR)](#-demo-ci--pr)
-- [Prompts](#-promopts)
+- [Demo (CI + PR)](#demo-ci--pr)
+- [Prompts](#promopts)
 - [License](#-license)
 </details>
 
