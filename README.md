@@ -25,7 +25,7 @@
 - [GitHub Action](#-github-action)
 - [Advanced](#-advanced)
 - [Examples](#-examples)
-- [Demo CI + PR SC](#-demo)
+- [Demo](#-demo)
 - [License](#-license)
 </details>
 
@@ -207,7 +207,7 @@ See [`examples/`](examples/):
 
 ---
 
-## 🛠️ Demo CI + PR SC
+## 🛠️ Demo
 SpecGuard in Action (CI + PR)
 ### Pull Request Comment (MEDIUM severity finding)
 ![SpecGuard PR Comment](docs/demo/pr-comment.jpeg)
@@ -216,7 +216,7 @@ SpecGuard in Action (CI + PR)
 ![SpecGuard CI Success](docs/demo/github-actions-success.jpeg)
 
 ### Structured Output (specguard.json)
-![SpecGuard JSON Finding](docs/demo/specguard-json-medium.jpeg)
+![SpecGuard JSON Finding](docs/demo/specguard-json-medium.png)
 
 
 ---
