@@ -207,7 +207,7 @@ See [`examples/`](examples/):
 
 ---
 
-## 🛠️ Demo
+## 🛠️ Demo CI + PR SC
 SpecGuard in Action (CI + PR)
 ### Pull Request Comment (MEDIUM severity finding)
 ![SpecGuard PR Comment](docs/demo/pr-comment.jpeg)
