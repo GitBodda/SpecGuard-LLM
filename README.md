@@ -20,12 +20,13 @@
 
 - [Overview](#-overview)
 - [Quick Start](#-quick-start)
-- [Architecture](#-architecture)
+- [Architecture](#architecture)
 - [CLI Usage](#-cli-usage)
 - [GitHub Action](#-github-action)
 - [Advanced](#-advanced)
 - [Examples](#-examples)
-- [Demo](#-demo)
+- [Demo (CI + PR)](#-demo-ci--pr)
+- [Prompts](#-promopts)
 - [License](#-license)
 </details>
 
@@ -217,12 +218,6 @@ SpecGuard in Action (CI + PR)
 
 ### Structured Output (specguard.json)
 ![SpecGuard JSON Finding](docs/demo/specguard-json-medium.png)
-
-
----
-
-specguard analyze   --repo .   --base origin/master   --head HEAD   --map-repo "$CLIENT_REPO"   --repo-slug ethereum/consensus-specs   --search-backend auto   --deterministic   --cache-dir .specguard/cache   --out specguard.json
-
 
 ---
 
