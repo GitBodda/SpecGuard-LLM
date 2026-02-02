@@ -25,6 +25,7 @@
 - [GitHub Action](#-github-action)
 - [Advanced](#-advanced)
 - [Examples](#-examples)
+- [Demo (CI + PR) Screenshots](#-demo)
 - [License](#-license)
 </details>
 
@@ -203,6 +204,20 @@ max_findings: 200
 See [`examples/`](examples/):
 - [`examples/sample_report.json`](examples/sample_report.json)
 - [`examples/sample_comment.md`](examples/sample_comment.md)
+
+---
+
+## Demo: SpecGuard in Action (CI + PR)
+
+### Pull Request Comment (MEDIUM severity finding)
+![SpecGuard PR Comment](docs/demo/pr-comment.jpeg)
+
+### GitHub Actions – Successful CI Run
+![SpecGuard CI Success](docs/demo/github-actions-success.jpeg)
+
+### Structured Output (specguard.json)
+![SpecGuard JSON Finding](docs/demo/specguard-json-medium.jpeg)
+
 
 ---
 
