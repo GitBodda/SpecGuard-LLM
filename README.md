@@ -1,5 +1,3 @@
-
-
 <div align="center">
   <img src="https://img.shields.io/badge/LLM-Powered-blueviolet?style=for-the-badge&logo=OpenAI" alt="LLM Powered"/>
   <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+"/>
@@ -25,8 +23,8 @@
 - [GitHub Action](#-github-action)
 - [Advanced](#-advanced)
 - [Examples](#-examples)
-- [Demo (CI + PR)](#demo-ci--pr)
-- [Prompts](#promopts)
+- [Demo (CI + PR)](#-demo)
+- [Prompts](#-prompts)
 - [License](#-license)
 </details>
 
@@ -46,8 +44,6 @@
 ---
 
 ## 🚀 Quick Start
-
-
 ```bash
 git clone https://github.com/GitBodda/specguard-llm
 cd specguard-llm
@@ -55,7 +51,6 @@ pip install -e ".[dev]"
 ```
 
 Analyze a spec repo (example: consensus-specs):
-
 ```bash
 git clone https://github.com/ethereum/consensus-specs
 cd consensus-specs
@@ -63,7 +58,6 @@ specguard analyze --repo . --base origin/master --head HEAD --out specguard.json
 ```
 
 Summarize findings:
-
 ```bash
 specguard summarize --input specguard.json
 ```
@@ -71,7 +65,6 @@ specguard summarize --input specguard.json
 ---
 <a id="architecture"></a>
 ## 🏗️ Architecture
-
 ```mermaid
 flowchart LR
   A[Git diff base..head] --> B[Diff normalizer + Redaction]
@@ -91,13 +84,11 @@ flowchart LR
 ## ⚡ CLI Usage
 
 Analyze changes:
-
 ```bash
 specguard analyze --repo . --base origin/master --head HEAD --out specguard.json
 ```
 
 Enable LLM (OpenAI):
-
 ```bash
 export SPEC_GUARD_LLM_PROVIDER=openai
 export SPEC_GUARD_OPENAI_BASE_URL=https://api.openai.com/v1
@@ -106,7 +97,6 @@ export SPEC_GUARD_OPENAI_MODEL=gpt-4o-mini
 ```
 
 Deterministic mode:
-
 ```bash
 specguard analyze --deterministic --cache-dir .specguard/cache
 ```
@@ -116,7 +106,6 @@ specguard analyze --deterministic --cache-dir .specguard/cache
 ## 🔄 GitHub Action
 
 Add to your repo as `.github/workflows/specguard.yml`:
-
 ```yaml
 name: SpecGuard
 on:
@@ -168,7 +157,6 @@ jobs:
 ## 🧭 Advanced
 
 **Multi-repo mapping:** Map spec rules into a client repo to highlight where updates/tests are needed.
-
 ```bash
 cd consensus-specs
 export CLIENT_REPO=/path/to/lighthouse
@@ -185,7 +173,6 @@ specguard analyze \
 ```
 
 **Config file example (`specguard.yml`):**
-
 ```yaml
 repo_slug: ethereum/consensus-specs
 map_repo: /path/to/client
@@ -207,9 +194,9 @@ See [`examples/`](examples/):
 - [`examples/sample_comment.md`](examples/sample_comment.md)
 
 ---
-<a id="demo"></a>
-## 🛠️ Demo
-SpecGuard in Action (CI + PR)
+<a id="-demo"></a>
+## 🛠️ Demo (CI + PR)
+
 ### Pull Request Comment (MEDIUM severity finding)
 ![SpecGuard PR Comment](docs/demo/pr-comment.jpeg)
 
@@ -220,7 +207,7 @@ SpecGuard in Action (CI + PR)
 ![SpecGuard JSON Finding](docs/demo/specguard-json-medium.png)
 
 ---
-<a id="prompts"></a>
+<a id="-prompts"></a>
 ## 💡 Prompts
 
 All prompts are versioned and editable under [`prompts/`](prompts/):
