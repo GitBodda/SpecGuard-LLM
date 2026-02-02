@@ -69,7 +69,7 @@ specguard summarize --input specguard.json
 ```
 
 ---
-
+<a id="architecture"></a>
 ## 🏗️ Architecture
 
 ```mermaid
@@ -207,7 +207,7 @@ See [`examples/`](examples/):
 - [`examples/sample_comment.md`](examples/sample_comment.md)
 
 ---
-
+<a id="demo"></a>
 ## 🛠️ Demo
 SpecGuard in Action (CI + PR)
 ### Pull Request Comment (MEDIUM severity finding)
@@ -220,7 +220,7 @@ SpecGuard in Action (CI + PR)
 ![SpecGuard JSON Finding](docs/demo/specguard-json-medium.png)
 
 ---
-
+<a id="prompts"></a>
 ## 💡 Prompts
 
 All prompts are versioned and editable under [`prompts/`](prompts/):
