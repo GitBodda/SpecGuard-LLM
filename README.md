@@ -77,27 +77,26 @@ specguard analyze --repo . --base origin/master --head HEAD --out specguard.json
 
 <hr/>
 
+---
+
 <a id="architecture"></a>
-<h2>🏗️ Architecture</h2>
+## 🏗️ Architecture
+```mermaid
+flowchart LR
+  A[Git diff base..head] --> B[Diff normalizer + Redaction]
+  B --> C[Spec file filter]
+  C --> D[LLM Rule Extractor]
+  D --> E[Rule Assertions]
+  E --> F[Heuristic Mapper]
+  F --> G[Findings Builder]
+  G --> H[JSON Report + Markdown Summary]
+  H --> I[GitHub Action]
+  H --> J[Local CLI output]
+  D --> K[Cache]
 
-<p>
-  SpecGuard LLM is designed around an auditable pipeline: normalize diffs, extract spec rules, map to affected code/tests,
-  then generate structured findings for CI and local workflows.
-</p>
+```
 
-<pre><code class="language-mermaid">flowchart LR
-  A[Git diff base..head] --&gt; B[Diff normalizer + Redaction]
-  B --&gt; C[Spec file filter]
-  C --&gt; D[LLM Rule Extractor]
-  D --&gt; E[Rule Assertions]
-  E --&gt; F[Heuristic Mapper]
-  F --&gt; G[Findings Builder]
-  G --&gt; H[JSON Report + Markdown Summary]
-  H --&gt; I[GitHub Action]
-  H --&gt; J[Local CLI output]
-  D --&gt; K[Cache]</code></pre>
-
-<hr/>
+---
 
 <h2 id="-cli-usage">⚡ CLI Usage</h2>
 
